@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hide entire images inside other images using 2-bit LSB steganography">
+    <title>Image in Image Steganography - Steganography Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="/" class="logo-section">
+                <div class="logo-icon">
+                    🔏
+                </div>
+                <div class="logo-text">
+                    <h1>Steganography Hub</h1>
+                    <p>Secure Data Hiding Platform</p>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="header-nav" id="headerNav">
+                <a href="/" class="header-nav-btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/embed" class="header-nav-btn">
+                    <i class="fas fa-lock"></i> Text Embed
+                </a>
+                <a href="/image_stego" class="header-nav-btn active">
+                    <i class="fas fa-image"></i> Image Embed
+                </a>
+                <a href="/detect" class="header-nav-btn">
+                    <i class="fas fa-search"></i> Detect
+                </a>
+                <a href="/extract" class="header-nav-btn">
+                    <i class="fas fa-unlock"></i> Extract
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <span>→</span>
+                <span>Image Steganography</span>
+            </div>
+
+            <h1>
+                <i class="fas fa-images"></i> Image-in-Image Steganography
+            </h1>
+            <p class="subtitle">Hide entire images inside other images using 2-bit LSB</p>
+
+            <div class="mode-selector">
+                <button class="mode-btn active" onclick="switchMode('embed')">
+                    <i class="fas fa-lock"></i> Hide Image
+                </button>
+                <button class="mode-btn" onclick="switchMode('extract')">
+                    <i class="fas fa-unlock"></i> Extract Image
+                </button>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <div id="embed-mode" class="mode-content active">
+                <form id="embedForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>1. Cover Image (Container)</label>
+                            <div class="upload-box" onclick="document.getElementById('coverInput').click()">
+                                <p><i class="fas fa-cloud-upload-alt"></i> Click to select cover image</p>
+                                <input type="file" id="coverInput" class="file-input" accept="image/*" required>
+                                <button type="button" class="upload-btn">
+                                    <i class="fas fa-folder-open"></i> Choose Cover Image
+                                </button>
+                                <div id="coverPreview" class="preview"></div>
+                            </div>
+                            <p class="info-text">
+                                <i class="fas fa-info-circle"></i> This image will contain the hidden data
+                            </p>
+                        </div>
+
+                        <div class="form-group">
+                            <label>2. Secret Image (To Hide)</label>
+                            <div class="upload-box" onclick="document.getElementById('secretInput').click()">
+                                <p><i class="fas fa-lock"></i> Click to select secret image</p>
+                                <input type="file" id="secretInput" class="file-input" accept="image/*" required>
+                                <button type="button" class="upload-btn">
+                                    <i class="fas fa-folder-open"></i> Choose Secret Image
+                                </button>
+                                <div id="secretPreview" class="preview"></div>
+                            </div>
+                            <p class="info-text">
+                                <i class="fas fa-lock"></i> This image will be hidden inside the cover
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="loader" id="embedLoader">
+                        <div class="spinner"></div>
+                        <p>Hiding image...</p>
+                    </div>
+
+                    <button type="submit" class="action-btn" id="embedBtn">
+                        <i class="fas fa-lock"></i> Hide Image Inside Cover
+                    </button>
+                </form>
+
+                <div id="embedResult" class="result-section">
+                    <h2 class="result-title">
+                        <i class="fas fa-check-circle"></i> Stego Image Created!
+                    </h2>
+                    <div class="result-content">
+                        <img id="stegoImage" src="" alt="Stego Image">
+                        <p id="embedMessage"></p>
+                        <a id="downloadStego" class="copy-btn" download="stego_image.png">
+                            <i class="fas fa-download"></i> Download Stego Image
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div id="extract-mode" class="mode-content">
+                <form id="extractForm">
+                    <div class="form-group">
+                        <label>Select Stego Image:</label>
+                        <div class="upload-box" onclick="document.getElementById('stegoInput').click()">
+                            <p><i class="fas fa-cloud-upload-alt"></i> Click to select stego image</p>
+                            <input type="file" id="stegoInput" class="file-input" accept="image/*" required>
+                            <button type="button" class="upload-btn">
+                                <i class="fas fa-folder-open"></i> Choose Stego Image
+                            </button>
+                            <div id="stegoPreview" class="preview"></div>
+                        </div>
+                        <p class="info-text">
+                            <i class="fas fa-exclamation-triangle"></i> Upload the image containing hidden data
+                        </p>
+                    </div>
+
+                    <div class="loader" id="extractLoader">
+                        <div class="spinner"></div>
+                        <p>Extracting hidden image...</p>
+                    </div>
+
+                    <button type="submit" class="action-btn" id="extractBtn">
+                        <i class="fas fa-unlock"></i> Extract Hidden Image
+                    </button>
+                </form>
+
+                <div id="extractResult" class="result-section">
+                    <h2 class="result-title">
+                        <i class="fas fa-check-circle"></i> Hidden Image Extracted!
+                    </h2>
+                    <div id="extractedImageSection">
+                        <img id="extractedImage" src="" alt="Extracted Image">
+                        <p id="extractMessage"></p>
+                        <a id="downloadExtracted" class="copy-btn">
+                            <i class="fas fa-download"></i> Download Extracted Image
+                        </a>
+                    </div>
+                    <div id="extractedTextSection" style="display: none;">
+                        <div class="extracted-text" id="extractedText"></div>
+                        <button class="copy-btn" onclick="copyExtractedText()">
+                            <i class="fas fa-clipboard"></i> Copy Text
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <!-- Same footer -->
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About Steganography Hub</h3>
+                    <p>Professional-grade steganography platform for secure data hiding in images. Built with military-grade encryption and advanced algorithms.</p>
+                    <p>© 2024 Steganography Hub. All rights reserved.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="/embed"><i class="fas fa-lock"></i> Text Embedding</a></li>
+                        <li><a href="/image_stego"><i class="fas fa-image"></i> Image Embedding</a></li>
+                        <li><a href="/detect"><i class="fas fa-search"></i> Smart Detection</a></li>
+                        <li><a href="/extract"><i class="fas fa-unlock"></i> Data Extraction</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#algorithms"><i class="fas fa-book"></i> Algorithms Guide</a></li>
+                        <li><a href="#security"><i class="fas fa-shield-alt"></i> Security Best Practices</a></li>
+                        <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Built with ❤️ using Flask, OpenCV, and Advanced Cryptography by Chetan Raval & Team</p>
+                <p>⚠️ Use responsibly. This tool is for educational and legitimate security purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    function toggleMobileMenu() {
+        document.getElementById('headerNav').classList.toggle('active');
+    }
+
+    const coverInput = document.getElementById('coverInput');
+    const secretInput = document.getElementById('secretInput');
+    const stegoInput = document.getElementById('stegoInput');
+    const messageDiv = document.getElementById('message');
+
+    function switchMode(mode) {
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.mode-content').forEach(content => content.classList.remove('active'));
+        
+        if (mode === 'embed') {
+            document.querySelectorAll('.mode-btn')[0].classList.add('active');
+            document.getElementById('embed-mode').classList.add('active');
+        } else {
+            document.querySelectorAll('.mode-btn')[1].classList.add('active');
+            document.getElementById('extract-mode').classList.add('active');
+        }
+        
+        hideMessage();
+        document.getElementById('embedResult').classList.remove('show');
+        document.getElementById('extractResult').classList.remove('show');
+    }
+
+    function previewImage(event, previewId) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const preview = document.getElementById(previewId);
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            const img = new Image();
+            img.onload = function() {
+                preview.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <div class="preview-info">Size: ${img.width} × ${img.height} | File: ${(file.size/1024).toFixed(2)}KB</div>
+                `;
+                preview.style.display = 'block';
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    coverInput.addEventListener('change', function(e) {
+        previewImage(e, 'coverPreview');
+    });
+
+    secretInput.addEventListener('change', function(e) {
+        previewImage(e, 'secretPreview');
+    });
+
+    stegoInput.addEventListener('change', function(e) {
+        previewImage(e, 'stegoPreview');
+    });
+
+    // 🔴 EMBED FORM SUBMISSION (WAS MISSING!)
+    document.getElementById('embedForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const coverFile = coverInput.files[0];
+        const secretFile = secretInput.files[0];
+
+        if (!coverFile || !secretFile) {
+            showMessage('Please select both cover and secret images', 'error');
+            return;
+        }
+
+        hideMessage();
+        document.getElementById('embedResult').classList.remove('show');
+        document.getElementById('embedLoader').classList.add('show');
+        document.getElementById('embedBtn').disabled = true;
+
+        const formData = new FormData();
+        formData.append('cover', coverFile);
+        formData.append('secret', secretFile);
+
+        try {
+            const response = await fetch('/embed_image_in_image', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // ✅ SET THE STEGO IMAGE SRC AND DOWNLOAD LINK
+                document.getElementById('stegoImage').src = data.stegoUrl;
+                document.getElementById('downloadStego').href = data.stegoUrl;
+                document.getElementById('embedMessage').textContent = data.message;
+                document.getElementById('embedResult').classList.add('show');
+                showMessage('Image hidden successfully! 🎉', 'success');
+                setTimeout(() => {
+                    document.getElementById('embedResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            } else {
+                showMessage('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            showMessage('Error: ' + error.message, 'error');
+        } finally {
+            document.getElementById('embedLoader').classList.remove('show');
+            document.getElementById('embedBtn').disabled = false;
+        }
+    });
+
+    // 🔴 EXTRACT FORM SUBMISSION (WAS ALSO MISSING!)
+    document.getElementById('extractForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const stegoFile = stegoInput.files[0];
+
+        if (!stegoFile) {
+            showMessage('Please select a stego image', 'error');
+            return;
+        }
+
+        hideMessage();
+        document.getElementById('extractResult').classList.remove('show');
+        document.getElementById('extractLoader').classList.add('show');
+        document.getElementById('extractBtn').disabled = true;
+
+        const formData = new FormData();
+        formData.append('stego', stegoFile);
+
+        try {
+            const response = await fetch('/extract_image_from_image', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                if (data.dataType === 'image') {
+                    document.getElementById('extractedImageSection').style.display = 'block';
+                    document.getElementById('extractedTextSection').style.display = 'none';
+                    document.getElementById('extractedImage').src = data.extractedUrl;
+                    document.getElementById('downloadExtracted').href = data.extractedUrl;
+                    document.getElementById('downloadExtracted').download = data.filename;
+                    document.getElementById('extractMessage').textContent = 
+                        `Original filename: ${data.filename} | Size: ${data.size}`;
+                } else {
+                    document.getElementById('extractedImageSection').style.display = 'none';
+                    document.getElementById('extractedTextSection').style.display = 'block';
+                    document.getElementById('extractedText').textContent = data.text;
+                }
+                document.getElementById('extractResult').classList.add('show');
+                showMessage('Hidden data extracted successfully! 🎉', 'success');
+                setTimeout(() => {
+                    document.getElementById('extractResult').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
+            } else {
+                showMessage('Error: ' + data.error, 'error');
+            }
+        } catch (error) {
+            showMessage('Error: ' + error.message, 'error');
+        } finally {
+            document.getElementById('extractLoader').classList.remove('show');
+            document.getElementById('extractBtn').disabled = false;
+        }
+    });
+
+    function copyExtractedText() {
+        const text = document.getElementById('extractedText').textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            showMessage('Text copied to clipboard! 📋', 'success');
+        }).catch(() => {
+            showMessage('Failed to copy text', 'error');
+        });
+    }
+
+    function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = 'message show ' + type;
+    }
+
+    function hideMessage() {
+        messageDiv.className = 'message';
+    }
+</script>
+
+    <style>
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .result-content {
+            text-align: center;
+        }
+        
+        .result-content img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 3px solid var(--primary);
+        }
+        
+        #extractedImageSection img {
+            border-color: var(--success);
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</body>
+</html>

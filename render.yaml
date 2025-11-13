@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: steganography-platform
+    env: python
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.13

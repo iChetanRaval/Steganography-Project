@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional steganography suite for hiding and extracting secret messages in images with military-grade encryption">
+    <meta name="keywords" content="steganography, image encryption, LSB, HUGO, WOW, data hiding">
+    <title>Steganography Hub - Advanced Image Steganography Suite</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="/" class="logo-section">
+                <div class="logo-icon">
+                    🔏
+                </div>
+                <div class="logo-text">
+                    <h1>Steganography Hub</h1>
+                    <p>Secure Data Hiding Platform</p>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="header-nav" id="headerNav">
+                <a href="/" class="header-nav-btn active">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/embed" class="header-nav-btn">
+                    <i class="fas fa-lock"></i> Text Embed
+                </a>
+                <a href="/image_stego" class="header-nav-btn">
+                    <i class="fas fa-image"></i> Image Embed
+                </a>
+                <a href="/detect" class="header-nav-btn">
+                    <i class="fas fa-search"></i> Detect
+                </a>
+                <a href="/extract" class="header-nav-btn">
+                    <i class="fas fa-unlock"></i> Extract
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <h1>
+                <i class="fas fa-shield-alt"></i> Steganography Hub
+            </h1>
+            <p class="subtitle">Advanced Image Steganography Suite</p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3>Hide Text Messages</h3>
+                    <p>Embed secret text messages into images using LSB, HUGO, or WOW algorithms with AES encryption</p>
+                    <a href="/embed" class="action-btn">
+                        Start Embedding <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="feature-tags">
+                        <span class="tag">AES-256</span>
+                        <span class="tag">3 Algorithms</span>
+                    </div>
+                </div>
+
+                <div class="feature-card highlight">
+                    <div class="feature-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <h3>Hide Images in Images</h3>
+                    <p>Conceal entire images inside cover images using advanced 2-bit LSB steganography</p>
+                    <a href="/image_stego" class="action-btn">
+                        Hide Images <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="feature-tags">
+                        <span class="tag">NEW</span>
+                        <span class="tag">2-bit LSB</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>Detect Hidden Data</h3>
+                    <p>Automatically detect steganographic content and identify the algorithm used</p>
+                    <a href="/detect" class="action-btn">
+                        Analyze Image <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="feature-tags">
+                        <span class="tag">Smart Detection</span>
+                        <span class="tag">Auto-ID</span>
+                    </div>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-unlock"></i>
+                    </div>
+                    <h3>Extract Text Messages</h3>
+                    <p>Recover hidden text messages from stego images with automatic algorithm detection</p>
+                    <a href="/extract" class="action-btn">
+                        Extract Now <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <div class="feature-tags">
+                        <span class="tag">Decryption</span>
+                        <span class="tag">Auto-Verify</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="highlights">
+                <h2>
+                    <i class="fas fa-sparkles"></i> Key Features
+                </h2>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon-large">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h4>Military-Grade Encryption</h4>
+                        <p>AES-256 encryption ensures your data stays secure</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-large">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h4>100% Accuracy</h4>
+                        <p>Metadata-based detection with zero false positives</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-large">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Multiple Algorithms</h4>
+                        <p>LSB, HUGO, WOW, and 2-bit image steganography</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon-large">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h4>Visual Analysis</h4>
+                        <p>Generate distortion maps to see pixel changes</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="how-it-works">
+                <h2 style="color: var(--primary);">
+                    How It Works
+                </h2>
+                <div class="steps-container">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <p>Upload cover image</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <p>Add secret data</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <p>Choose algorithm</p>
+                    </div>
+                    <div class="step-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <p>Download stego image</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-info">
+                <p>
+                    <strong>Supported Formats:</strong> PNG, JPG, JPEG | 
+                    <strong>Max Image Size:</strong> 10MB | 
+                    <strong>Encryption:</strong> AES-256-CBC
+                </p>
+                <p class="info-text">
+                    <i class="fas fa-lightbulb"></i> Tip: Use PNG format for best quality and capacity
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About Steganography Hub</h3>
+                    <p>Professional-grade steganography platform for secure data hiding in images. Built with military-grade encryption and advanced algorithms.</p>
+                    <p>© 2025 Steganography Hub. All rights reserved.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="/embed"><i class="fas fa-lock"></i> Text Embedding</a></li>
+                        <li><a href="/image_stego"><i class="fas fa-image"></i> Image Embedding</a></li>
+                        <li><a href="/detect"><i class="fas fa-search"></i> Smart Detection</a></li>
+                        <li><a href="/extract"><i class="fas fa-unlock"></i> Data Extraction</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#algorithms"><i class="fas fa-book"></i> Algorithms Guide</a></li>
+                        <li><a href="#security"><i class="fas fa-shield-alt"></i> Security Best Practices</a></li>
+                        <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Built with ❤️ using Flask, OpenCV, and Advanced Cryptography by Chetan Raval & Team</p>
+                <p>⚠️ Use responsibly. This tool is for educational and legitimate security purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            const nav = document.getElementById('headerNav');
+            nav.classList.toggle('active');
+        }
+    </script>
+
+    <style>
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            padding: 24px;
+            border-radius: 16px;
+            transition: var(--transition);
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+        
+        .feature-card.highlight {
+            border: 2px solid var(--primary);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .feature-icon-large {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+        
+        .feature-card h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .feature-tags {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .highlights {
+            margin-top: 60px;
+            padding: 32px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        }
+        
+        .highlights h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+        
+        .feature-item {
+            text-align: center;
+        }
+        
+        .feature-item h4 {
+            margin: 12px 0;
+            color: var(--text);
+        }
+        
+        .feature-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+        
+        .how-it-works {
+            margin-top: 50px;
+            text-align: center;
+        }
+        
+        .steps-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .step {
+            text-align: center;
+            min-width: 100px;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 8px;
+        }
+        
+        .step-arrow {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+        
+        .footer-info {
+            margin-top: 60px;
+            padding: 24px;
+            text-align: center;
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 16px;
+        }
+        
+        .footer-info p {
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        @media (max-width: 768px) {
+            .step-arrow {
+                display: none;
+            }
+            
+            .steps-container {
+                gap: 24px;
+            }
+        }
+    </style>
+</body>
+</html>

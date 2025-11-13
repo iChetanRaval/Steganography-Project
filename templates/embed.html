@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Embed secret text messages into images using LSB, HUGO, or WOW algorithms with AES-256 encryption">
+    <title>Embed Secret Message - Steganography Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="/" class="logo-section">
+                <div class="logo-icon">
+                    🔏
+                </div>
+                <div class="logo-text">
+                    <h1>Steganography Hub</h1>
+                    <p>Secure Data Hiding Platform</p>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="header-nav" id="headerNav">
+                <a href="/" class="header-nav-btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/embed" class="header-nav-btn active">
+                    <i class="fas fa-lock"></i> Text Embed
+                </a>
+                <a href="/image_stego" class="header-nav-btn">
+                    <i class="fas fa-image"></i> Image Embed
+                </a>
+                <a href="/detect" class="header-nav-btn">
+                    <i class="fas fa-search"></i> Detect
+                </a>
+                <a href="/extract" class="header-nav-btn">
+                    <i class="fas fa-unlock"></i> Extract
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <span>→</span>
+                <span>Text Embed</span>
+            </div>
+
+            <h1>
+                <i class="fas fa-lock"></i> Embed Secret Message
+            </h1>
+            <p class="subtitle">Hide your secret text inside an image with military-grade encryption</p>
+
+            <div id="message" class="message"></div>
+
+            <form id="embedForm">
+                <div class="form-group">
+                    <label for="imageInput">Select Cover Image:</label>
+                    <div class="upload-box" onclick="document.getElementById('imageInput').click()">
+                        <p><i class="fas fa-cloud-upload-alt"></i> Click to select an image</p>
+                        <input type="file" id="imageInput" class="file-input" accept="image/*" required>
+                        <button type="button" class="upload-btn">
+                            <i class="fas fa-folder-open"></i> Choose Image
+                        </button>
+                        <div id="imagePreview" class="preview"></div>
+                    </div>
+                    <p class="info-text">
+                        <i class="fas fa-info-circle"></i> Supported: PNG, JPG, JPEG (Max 10MB)
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="messageInput">Secret Message:</label>
+                    <textarea id="messageInput" name="message" rows="5" placeholder="Enter your secret message here..." required></textarea>
+                    <div class="char-counter">Characters: <span id="charCount">0</span></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="algorithm">Steganography Algorithm:</label>
+                    <select id="algorithm" name="algorithm" required>
+                        <option value="">Select algorithm...</option>
+                        <option value="lsb">LSB (Least Significant Bit) - Fast & Simple</option>
+                        <option value="hugo">HUGO - Advanced Security</option>
+                        <option value="wow">WOW - Maximum Stealth</option>
+                    </select>
+                    <p class="info-text">
+                        <i class="fas fa-info-circle"></i> Each algorithm offers different security and performance characteristics
+                    </p>
+                </div>
+
+                <div class="loader" id="loader">
+                    <div class="spinner"></div>
+                    <p>Embedding message...</p>
+                </div>
+
+                <button type="submit" class="action-btn" id="embedBtn">
+                    <i class="fas fa-lock"></i> Embed Message
+                </button>
+            </form>
+
+            <div id="resultSection" class="result-section">
+                <h2 class="result-title">
+                    <i class="fas fa-check-circle"></i> Embedding Complete!
+                </h2>
+                
+                <div class="comparison-grid">
+    <div class="comparison-item">
+        <h3>Original Cover Image</h3>
+        <img id="coverImage" src="" alt="Cover Image">
+    </div>
+    <div class="comparison-item">
+        <h3>Stego Image (With Hidden Message)</h3>
+        <img id="stegoImage" src="" alt="Stego Image">
+    </div>
+</div>
+
+<!-- Download button centered below both images -->
+<div class="download-section">
+    <a id="downloadStego" class="action-btn" download="stego_image.png">
+        <i class="fas fa-download"></i> Download Stego Image
+    </a>
+</div>
+
+                <div class="distortion-section">
+                    <h3>
+                        <i class="fas fa-project-diagram"></i> Visual Distortion Map
+                    </h3>
+                    <p class="info-text">
+                        <i class="fas fa-exclamation-circle"></i> White pixels show where changes were made (magnified for visibility)
+                    </p>
+                    <img id="distortionMap" src="" alt="Distortion Map">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <!-- Same footer as home.html -->
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About Steganography Hub</h3>
+                    <p>Professional-grade steganography platform for secure data hiding in images. Built with military-grade encryption and advanced algorithms.</p>
+                    <p>© 2025 Steganography Hub. All rights reserved.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="/embed"><i class="fas fa-lock"></i> Text Embedding</a></li>
+                        <li><a href="/image_stego"><i class="fas fa-image"></i> Image Embedding</a></li>
+                        <li><a href="/detect"><i class="fas fa-search"></i> Smart Detection</a></li>
+                        <li><a href="/extract"><i class="fas fa-unlock"></i> Data Extraction</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#algorithms"><i class="fas fa-book"></i> Algorithms Guide</a></li>
+                        <li><a href="#security"><i class="fas fa-shield-alt"></i> Security Best Practices</a></li>
+                        <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Built with ❤️ using Flask, OpenCV, and Advanced Cryptography by Chetan Raval & Team</p>
+                <p>⚠️ Use responsibly. This tool is for educational and legitimate security purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Same JavaScript as original
+        function toggleMobileMenu() {
+            const nav = document.getElementById('headerNav');
+            nav.classList.toggle('active');
+        }
+
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const messageInput = document.getElementById('messageInput');
+        const charCount = document.getElementById('charCount');
+        const embedForm = document.getElementById('embedForm');
+        const loader = document.getElementById('loader');
+        const resultSection = document.getElementById('resultSection');
+        const messageDiv = document.getElementById('message');
+
+        messageInput.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
+        });
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.innerHTML = `<img src="${event.target.result}" alt="Cover Image">`;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        embedForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const file = imageInput.files[0];
+            const message = messageInput.value;
+            const algorithm = document.getElementById('algorithm').value;
+
+            if (!file || !message || !algorithm) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+
+            hideMessage();
+            resultSection.classList.remove('show');
+            loader.classList.add('show');
+            document.getElementById('embedBtn').disabled = true;
+
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('message', message);
+            formData.append('algorithm', algorithm);
+
+            try {
+                const response = await fetch('/perform_embed', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('coverImage').src = data.coverUrl;
+                    document.getElementById('stegoImage').src = data.stegoUrl;
+                    document.getElementById('distortionMap').src = data.distortionUrl;
+                    document.getElementById('downloadStego').href = data.stegoUrl;
+                    resultSection.classList.add('show');
+                    showMessage('Message embedded successfully! <i class="fas fa-check"></i>', 'success');
+                    
+                    setTimeout(() => {
+                        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                } else {
+                    showMessage('Error: ' + data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            } finally {
+                loader.classList.remove('show');
+                document.getElementById('embedBtn').disabled = false;
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.innerHTML = text;
+            messageDiv.className = 'message show ' + type;
+        }
+
+        function hideMessage() {
+            messageDiv.className = 'message';
+        }
+    </script>
+
+    <style>
+        .distortion-section img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow-md);
+            margin-top: 1rem;
+            border: 2px solid var(--border);
+            filter: invert(1);
+            background: white;
+        }
+    </style>
+</body>
+</html>

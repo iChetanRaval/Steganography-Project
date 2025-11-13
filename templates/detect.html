@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detect hidden steganographic content in images">
+    <title>Detect Stego Image - Steganography Hub</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="/" class="logo-section">
+                <div class="logo-icon">
+                    🔏
+                </div>
+                <div class="logo-text">
+                    <h1>Steganography Hub</h1>
+                    <p>Secure Data Hiding Platform</p>
+                </div>
+            </a>
+            <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="header-nav" id="headerNav">
+                <a href="/" class="header-nav-btn">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <a href="/embed" class="header-nav-btn">
+                    <i class="fas fa-lock"></i> Text Embed
+                </a>
+                <a href="/image_stego" class="header-nav-btn">
+                    <i class="fas fa-image"></i> Image Embed
+                </a>
+                <a href="/detect" class="header-nav-btn active">
+                    <i class="fas fa-search"></i> Detect
+                </a>
+                <a href="/extract" class="header-nav-btn">
+                    <i class="fas fa-unlock"></i> Extract
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <span>→</span>
+                <span>Detection</span>
+            </div>
+
+            <h1>
+                <i class="fas fa-search"></i> Stego Detection
+            </h1>
+            <p class="subtitle">Detect hidden messages via smart extraction</p>
+
+            <div id="message" class="message"></div>
+
+            <form id="detectForm">
+                <div class="form-group">
+                    <label for="imageInput">Select Image to Analyze:</label>
+                    <div class="upload-box" onclick="document.getElementById('imageInput').click()">
+                        <p><i class="fas fa-cloud-upload-alt"></i> Click to select an image</p>
+                        <input type="file" id="imageInput" class="file-input" accept="image/*" required>
+                        <button type="button" class="upload-btn">
+                            <i class="fas fa-folder-open"></i> Choose Image
+                        </button>
+                        <div id="imagePreview" class="preview"></div>
+                    </div>
+                    <p class="info-text">
+                        <i class="fas fa-search"></i> Upload any image to check for hidden content
+                    </p>
+                </div>
+
+                <div class="loader" id="loader">
+                    <div class="spinner"></div>
+                    <p>Analyzing image...</p>
+                </div>
+
+                <button type="submit" class="action-btn" id="detectBtn">
+                    <i class="fas fa-search"></i> Analyze Image
+                </button>
+            </form>
+
+            <div id="resultSection" class="result-section">
+                <div class="detection-result">
+                    <div class="result-icon" id="resultIcon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h2 id="resultTitle">Analysis Result</h2>
+                    <div class="result-badge" id="resultBadge">Processing...</div>
+                    <div class="confidence-bar">
+                        <div class="confidence-label">Confidence:</div>
+                        <div class="confidence-value" id="confidence">0%</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+                    <div class="result-explanation" id="explanation"></div>
+                    <div id="algorithmInfo" class="algorithm-info" style="display: none;">
+                        <strong><i class="fas fa-lock"></i> Algorithm Used:</strong> <span id="algorithmName"></span>
+                    </div>
+                    
+                    <div id="reportSection" style="display: none;">
+                        <div class="report-box">
+                            <h3>
+                                <i class="fas fa-file-pdf"></i> Detailed Forensic Analysis
+                            </h3>
+                            <p>Generate a comprehensive PDF report with visual analysis, statistical metrics, and forensic findings</p>
+                            <button id="generateReportBtn" class="action-btn">
+                                <i class="fas fa-chart-bar"></i> Generate Forensic Report
+                            </button>
+                            <div id="reportLoader" class="loader" style="display: none;">
+                                <div class="spinner"></div>
+                                <p>Generating detailed report...</p>
+                            </div>
+                            <div id="reportResult" style="display: none;">
+                                <p><i class="fas fa-check-circle"></i> Report Generated Successfully!</p>
+                                <a id="reportDownloadLink" href="#" target="_blank" class="copy-btn">
+                                    <i class="fas fa-download"></i> Download PDF Report
+                                </a>
+                                <a id="reportViewLink" href="#" target="_blank" class="copy-btn">
+                                    <i class="fas fa-eye"></i> View in Browser
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer">
+        <!-- Same footer -->
+        <div class="footer-content">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <h3>About Steganography Hub</h3>
+                    <p>Professional-grade steganography platform for secure data hiding in images. Built with military-grade encryption and advanced algorithms.</p>
+                    <p>© 2025 Steganography Hub. All rights reserved.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Features</h3>
+                    <ul class="footer-links">
+                        <li><a href="/embed"><i class="fas fa-lock"></i> Text Embedding</a></li>
+                        <li><a href="/image_stego"><i class="fas fa-image"></i> Image Embedding</a></li>
+                        <li><a href="/detect"><i class="fas fa-search"></i> Smart Detection</a></li>
+                        <li><a href="/extract"><i class="fas fa-unlock"></i> Data Extraction</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#algorithms"><i class="fas fa-book"></i> Algorithms Guide</a></li>
+                        <li><a href="#security"><i class="fas fa-shield-alt"></i> Security Best Practices</a></li>
+                        <li><a href="#faq"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#contact"><i class="fas fa-envelope"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul class="footer-links">
+                        <li><a href="#privacy">Privacy Policy</a></li>
+                        <li><a href="#terms">Terms of Service</a></li>
+                        <li><a href="#disclaimer">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>Built with ❤️ using Flask, OpenCV, and Advanced Cryptography by Chetan Raval & Team</p>
+                <p>⚠️ Use responsibly. This tool is for educational and legitimate security purposes only.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Same JavaScript as original (with minor update for icon in resultIcon)
+        function toggleMobileMenu() {
+            document.getElementById('headerNav').classList.toggle('active');
+        }
+
+        const imageInput = document.getElementById('imageInput');
+        const imagePreview = document.getElementById('imagePreview');
+        const detectForm = document.getElementById('detectForm');
+        const loader = document.getElementById('loader');
+        const resultSection = document.getElementById('resultSection');
+        const messageDiv = document.getElementById('message');
+        const reportSection = document.getElementById('reportSection');
+        const generateReportBtn = document.getElementById('generateReportBtn');
+        const reportLoader = document.getElementById('reportLoader');
+        const reportResult = document.getElementById('reportResult');
+
+        let detectionData = {
+            imagePath: null,
+            algorithm: null,
+            confidence: null,
+            prediction: null,
+            extractedMessage: null
+        };
+
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.innerHTML = `<img src="${event.target.result}" alt="Image to analyze">`;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        detectForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const file = imageInput.files[0];
+            if (!file) {
+                showMessage('Please select an image', 'error');
+                return;
+            }
+
+            hideMessage();
+            resultSection.classList.remove('show');
+            reportSection.style.display = 'none';
+            reportResult.style.display = 'none';
+            loader.classList.add('show');
+            document.getElementById('detectBtn').disabled = true;
+
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await fetch('/perform_detect', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    detectionData.algorithm = data.algorithm;
+                    detectionData.confidence = parseFloat(data.confidence);
+                    detectionData.prediction = data.prediction;
+                    detectionData.imageId = data.imageId;
+                    
+                    displayResult(data.prediction, data.confidence, data.algorithm, data.explanation);
+                    showMessage('Analysis complete! <i class="fas fa-check"></i>', 'success');
+                    setTimeout(() => {
+                        resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 300);
+                } else {
+                    showMessage('Error: ' + data.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            } finally {
+                loader.classList.remove('show');
+                document.getElementById('detectBtn').disabled = false;
+            }
+        });
+
+        function displayResult(prediction, confidence, algorithm, explanation) {
+            const isStego = prediction === 'Stego Image';
+            document.getElementById('resultIcon').innerHTML = isStego 
+                ? '<i class="fas fa-exclamation-triangle" style="color: var(--error);"></i>' 
+                : '<i class="fas fa-check-circle" style="color: var(--success);"></i>';
+            document.getElementById('resultTitle').textContent = prediction;
+            
+            const badge = document.getElementById('resultBadge');
+            badge.textContent = prediction;
+            badge.className = 'result-badge ' + (isStego ? 'stego' : 'clean');
+            
+            document.getElementById('confidence').textContent = confidence;
+            document.getElementById('progressFill').style.width = confidence.replace('%', '%');
+            
+            const explanationDiv = document.getElementById('explanation');
+            if (isStego) {
+                explanationDiv.innerHTML = `<p><strong>This image contains hidden data.</strong></p><p>${explanation}</p>`;
+                if (algorithm) {
+                    document.getElementById('algorithmInfo').style.display = 'block';
+                    document.getElementById('algorithmName').textContent = algorithm;
+                }
+                reportSection.style.display = 'block';
+            } else {
+                explanationDiv.innerHTML = `<p><strong>This image appears to be clean.</strong></p><p>${explanation}</p>`;
+                document.getElementById('algorithmInfo').style.display = 'none';
+                reportSection.style.display = 'block';
+            }
+            
+            resultSection.classList.add('show');
+        }
+
+        generateReportBtn.addEventListener('click', async function() {
+            const file = imageInput.files[0];
+            if (!file) {
+                showMessage('Please run detection first', 'error');
+                return;
+            }
+
+            reportLoader.style.display = 'block';
+            reportResult.style.display = 'none';
+            generateReportBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                formData.append('image', file);
+
+                const uploadResponse = await fetch('/perform_detect', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const uploadPath = `uploads/detect_${detectionData.imageId}_${file.name}`;
+                
+                const reportResponse = await fetch('/generate_report', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        stegoPath: uploadPath,
+                        coverPath: uploadPath,
+                        algorithm: detectionData.algorithm,
+                        confidence: detectionData.confidence
+                    })
+                });
+
+                const reportData = await reportResponse.json();
+
+                if (reportData.success) {
+                    document.getElementById('reportDownloadLink').href = reportData.reportUrl;
+                    document.getElementById('reportViewLink').href = reportData.reportUrl;
+                    reportResult.style.display = 'block';
+                    showMessage('<i class="fas fa-file-pdf"></i> Forensic report generated successfully!', 'success');
+                } else {
+                    showMessage('Error generating report: ' + reportData.error, 'error');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error');
+            } finally {
+                reportLoader.style.display = 'none';
+                generateReportBtn.disabled = false;
+            }
+        });
+
+        function showMessage(text, type) {
+            messageDiv.innerHTML = text;
+            messageDiv.className = 'message show ' + type;
+        }
+
+        function hideMessage() {
+            messageDiv.className = 'message';
+        }
+    </script>
+
+    <style>
+        .report-box {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .report-box h3 {
+            color: var(--primary);
+            margin: 0 0 12px 0;
+            font-size: 1.25rem;
+        }
+        
+        .report-box p {
+            color: var(--text-secondary);
+            margin: 0 0 16px 0;
+            font-size: 0.95rem;
+        }
+    </style>
+</body>
+</html>

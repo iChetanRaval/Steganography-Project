@@ -1,0 +1,11 @@
+Flask
+Werkzeug
+Pillow
+numpy
+torch
+torchvision
+pycryptodome
+opencv-python
+tqdm
+matplotlib
+requests
