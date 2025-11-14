@@ -9,3 +9,4 @@ opencv-python
 tqdm
 matplotlib
 requests
+gunicorn

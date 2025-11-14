@@ -1711,6 +1711,16 @@ from wow import WowSteganography
 from image_steganography import ImageSteganography
 from forensic_report import ForensicReportGenerator  # NEW IMPORT
 
+# Production configuration
+if os.environ.get('RENDER'):
+    # Running on Render
+    DEBUG = False
+    PORT = int(os.environ.get('PORT', 10000))
+else:
+    # Running locally
+    DEBUG = True
+    PORT = 5000
+
 
 # ===============================================
 # Flask App Configuration
@@ -2317,7 +2327,22 @@ def perform_extract():
 #     app.run(debug=True, port=5000)
 
 
-# Add this at the end of app.py
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+if __name__ == "__main__":
+    print("\n" + "="*70)
+    print("🔒 STEGANOGRAPHY WEB APPLICATION")
+    print("="*70)
+    print("\n🚀 Server starting...")
+    
+    if os.environ.get('RENDER'):
+        print(f"🌐 Running on Render (Production Mode)")
+        print(f"📱 Port: {PORT}")
+    else:
+        print(f"📱 Running locally: http://127.0.0.1:{PORT}")
+    
+    print(f"🔐 Encryption: AES-256")
+    print(f"🔍 Detection: Metadata-based")
+    print(f"📄 Forensic Report Generation Available!")
+    print("\n💡 Press Ctrl+C to stop the server\n")
+    print("="*70 + "\n")
+    
+    app.run(host='0.0.0.0', port=PORT, debug=DEBUG)
