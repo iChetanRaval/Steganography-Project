@@ -30,6 +30,10 @@
 - [Project Structure](#-project-structure)
 - [Technology Stack](#-technology-stack)
 - [System Architecture](#-system-architecture)
+- [Configuration](#-configuration)
+- [Testing](#-testing)
+- [Contributing](#-contributing)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
@@ -1065,4 +1069,644 @@ steganography-platform/
 │   ├── temp_lsb.png
 │   └── temp_histogram.png
 │
-├── 📂 training_images/
+├── 📂 docs/                           # Documentation
+│   ├── API.md                        # API documentation
+│   ├── DEPLOYMENT.md                 # Deployment guide
+│   └── ALGORITHMS.md                 # Algorithm details
+│
+└── 📂 tests/                          # Test files (optional)
+    ├── test_embed.py
+    ├── test_detect.py
+    └── test_forensics.py
+```
+
+---
+
+## 💻 Technology Stack
+
+### Backend
+- **Python 3.8+**: Core programming language
+- **Flask 3.0**: Lightweight web framework
+- **PyCryptodome**: AES-256 encryption
+- **OpenCV 4.8+**: Image processing and computer vision
+- **NumPy 1.24**: Numerical computing and array operations
+- **Scikit-Image 0.22**: Image analysis (PSNR, SSIM metrics)
+- **Matplotlib 3.8**: Data visualization and histograms
+- **FPDF 1.7**: PDF report generation
+- **Gunicorn 21.2**: WSGI HTTP server (production)
+
+### Frontend
+- **HTML5**: Semantic markup
+- **CSS3**: Modern styling with Flexbox/Grid
+- **JavaScript ES6+**: Async operations and DOM manipulation
+- **Fetch API**: RESTful API communication
+
+### Algorithms
+- **LSB**: Custom spatial domain implementation
+- **HUGO**: Research-based adaptive algorithm
+- **WOW**: Wavelet-based content-adaptive steganography
+
+### Security
+- **AES-256-EAX**: Authenticated encryption
+- **CSPRNG**: Cryptographically secure random number generation
+- **Secure File Handling**: Werkzeug utilities
+
+### Development Tools
+- **Git**: Version control
+- **Virtual Environment**: Dependency isolation
+- **pip**: Package management
+
+---
+
+## 🏗️ System Architecture
+
+### High-Level Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                   PRESENTATION LAYER                     │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐ ┌──────────┐│
+│  │embed.html│  │detect.html│ │extract.html│image.html││
+│  └──────────┘  └──────────┘  └──────────┘ └──────────┘│
+│       HTML5 Templates + CSS3 + JavaScript               │
+└──────────────────────┬──────────────────────────────────┘
+                       │ HTTP/HTTPS
+┌──────────────────────▼──────────────────────────────────┐
+│                  APPLICATION LAYER                       │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │              Flask 3.0 Web Server                 │  │
+│  │  Routes: /embed, /detect, /extract, /generate... │  │
+│  └──────────────────────────────────────────────────┘  │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│                  BUSINESS LOGIC LAYER                    │
+│  ┌────────────┐ ┌────────────┐ ┌────────────┐          │
+│  │  LSB       │ │   HUGO     │ │    WOW     │          │
+│  │  Algorithm │ │  Algorithm │ │  Algorithm │          │
+│  └────────────┘ └────────────┘ └────────────┘          │
+│  ┌──────────────────────────────────────────┐          │
+│  │         Forensic Report Generator         │          │
+│  └──────────────────────────────────────────┘          │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│               DATA PROCESSING LAYER                      │
+│  ┌───────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ │
+│  │  OpenCV   │ │  NumPy   │ │Matplotlib│ │  FPDF    │ │
+│  │  (Image)  │ │ (Compute)│ │  (Viz)   │ │  (PDF)   │ │
+│  └───────────┘ └──────────┘ └──────────┘ └──────────┘ │
+│  ┌───────────────────────────────────────────────────┐ │
+│  │         PyCryptodome (AES-256 Encryption)         │ │
+│  └───────────────────────────────────────────────────┘ │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+┌──────────────────────▼──────────────────────────────────┐
+│                   STORAGE LAYER                          │
+│  ┌─────────────┐ ┌───────────────┐ ┌───────────────┐  │
+│  │  uploads/   │ │static/generated││static/reports/│  │
+│  │  (Temp)     │ │  (Stego imgs) │ │  (PDF files)  │  │
+│  └─────────────┘ └───────────────┘ └───────────────┘  │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │        .encryption_key (AES Key Storage)         │  │
+│  └──────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Data Flow Diagram
+
+```mermaid
+graph TB
+    A[User] -->|Upload Image + Message| B[Web Interface]
+    B -->|POST Request| C[Flask Router]
+    C -->|Save Files| D[File System]
+    C -->|Add Metadata| E[Metadata Handler]
+    E -->|Encrypt| F[AES-256 Encryption]
+    F -->|Select Algorithm| G{Algorithm Choice}
+    G -->|LSB| H[LSB Processor]
+    G -->|HUGO| I[HUGO Processor]
+    G -->|WOW| J[WOW Processor]
+    H -->|Embed| K[OpenCV Processing]
+    I -->|Embed| K
+    J -->|Embed| K
+    K -->|Generate| L[Stego Image]
+    K -->|Create| M[Distortion Map]
+    L -->|Save| D
+    M -->|Save| D
+    D -->|Return URLs| B
+    B -->|Display Results| A
+```
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+
+**Production Configuration:**
+
+```bash
+# Flask Settings
+FLASK_ENV=production
+FLASK_DEBUG=False
+SECRET_KEY=your-secret-key-here
+
+# Server Settings
+HOST=0.0.0.0
+PORT=5000
+
+# File Upload Settings
+MAX_CONTENT_LENGTH=10485760  # 10MB in bytes
+UPLOAD_FOLDER=uploads
+GENERATED_FOLDER=static/generated
+REPORTS_FOLDER=static/reports
+
+# Security
+ALLOWED_EXTENSIONS=png,jpg,jpeg
+```
+
+**Development Configuration:**
+
+```bash
+FLASK_ENV=development
+FLASK_DEBUG=True
+HOST=127.0.0.1
+PORT=5000
+```
+
+### Application Settings
+
+**Edit in `app.py`:**
+
+```python
+# Maximum file size (10MB)
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
+
+# Secret key for sessions
+app.config['SECRET_KEY'] = os.urandom(24)
+
+# Algorithm payload capacity
+PAYLOAD_CAPACITY = 0.3  # 30% of image size
+```
+
+### Customization Options
+
+**1. Change Image Size Limits:**
+
+```python
+# In app.py
+MAX_IMAGE_SIZE = (2048, 2048)  # Max dimensions
+
+# Add resize function
+def resize_if_needed(image):
+    if image.size > MAX_IMAGE_SIZE:
+        image.thumbnail(MAX_IMAGE_SIZE, Image.LANCZOS)
+    return image
+```
+
+**2. Adjust Detection Confidence:**
+
+```python
+# In app.py, perform_detect()
+confidence_value = round(random.uniform(90.0, 98.0), 2)  # Change range
+```
+
+**3. Customize Report Metrics:**
+
+```python
+# In forensic_report.py
+if detected_algorithm:
+    psnr_val = random.uniform(40.0, 60.0)  # Adjust PSNR range
+    diff_percentage = random.uniform(40.0, 80.0) / 100.0  # Adjust %
+```
+
+**4. Modify Cleanup Schedule:**
+
+```python
+# Add automatic cleanup
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
+
+def cleanup_old_files():
+    # Delete files older than 1 hour
+    for folder in ['uploads', 'static/generated', 'static/reports']:
+        for file in os.listdir(folder):
+            # Cleanup logic
+            pass
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=cleanup_old_files, trigger="interval", hours=1)
+scheduler.start()
+atexit.register(lambda: scheduler.shutdown())
+```
+
+---
+
+## 🧪 Testing
+
+### Manual Testing
+
+**Test Embedding:**
+```bash
+# 1. Start application
+python app.py
+
+# 2. Navigate to http://127.0.0.1:5000/embed
+# 3. Upload test image
+# 4. Enter message: "Test message 123"
+# 5. Select algorithm: WOW
+# 6. Verify stego image downloads
+```
+
+**Test Detection:**
+```bash
+# 1. Navigate to /detect
+# 2. Upload the stego image from above
+# 3. Verify detection shows:
+#    - Verdict: Stego Image
+#    - Algorithm: WOW
+#    - Message: "Test message 123"
+```
+
+**Test Report Generation:**
+```bash
+# 1. After detection, click "Generate Forensic Report"
+# 2. Wait for PDF generation
+# 3. Download and verify PDF contains:
+#    - All visual analysis images
+#    - Correct metrics
+#    - Extracted message
+```
+
+### Automated Testing (Optional)
+
+**Create `tests/test_embed.py`:**
+
+```python
+import unittest
+from app import app
+
+class TestEmbed(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+    
+    def test_embed_route_exists(self):
+        response = self.app.get('/embed')
+        self.assertEqual(response.status_code, 200)
+    
+    def test_perform_embed_no_data(self):
+        response = self.app.post('/perform_embed')
+        self.assertEqual(response.status_code, 400)
+    
+    # Add more tests...
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+**Run tests:**
+```bash
+python -m pytest tests/
+# or
+python -m unittest discover tests/
+```
+
+### Performance Testing
+
+**Test with different image sizes:**
+
+```python
+# test_performance.py
+import time
+import requests
+
+def test_embedding_speed(image_size):
+    start = time.time()
+    # Perform embedding
+    response = requests.post('http://127.0.0.1:5000/perform_embed', ...)
+    end = time.time()
+    print(f"Image size: {image_size}, Time: {end - start:.2f}s")
+
+# Test various sizes
+for size in [(512, 512), (1024, 1024), (2048, 2048)]:
+    test_embedding_speed(size)
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Here's how you can help:
+
+### Ways to Contribute
+
+1. 🐛 **Report Bugs**: Open an issue with detailed reproduction steps
+2. 💡 **Suggest Features**: Propose new features or improvements
+3. 📖 **Improve Documentation**: Fix typos, add examples, clarify instructions
+4. 💻 **Submit Code**: Fix bugs or add features via pull requests
+5. 🧪 **Write Tests**: Add test coverage for existing features
+
+### Contribution Guidelines
+
+**1. Fork the Repository**
+```bash
+git clone https://github.com/yourusername/steganography-platform.git
+cd steganography-platform
+```
+
+**2. Create a Branch**
+```bash
+git checkout -b feature/your-feature-name
+# or
+git checkout -b fix/your-bug-fix
+```
+
+**3. Make Changes**
+- Follow PEP 8 style guide
+- Add comments for complex logic
+- Update documentation
+- Add tests if applicable
+
+**4. Test Your Changes**
+```bash
+# Run the application
+python app.py
+
+# Test manually
+# Run automated tests (if available)
+python -m pytest tests/
+```
+
+**5. Commit Your Changes**
+```bash
+git add .
+git commit -m "feat: Add new feature description"
+# or
+git commit -m "fix: Fix bug description"
+```
+
+**Commit Message Format:**
+- `feat:` New feature
+- `fix:` Bug fix
+- `docs:` Documentation changes
+- `style:` Code style changes (formatting)
+- `refactor:` Code refactoring
+- `test:` Add or update tests
+- `chore:` Maintenance tasks
+
+**6. Push to GitHub**
+```bash
+git push origin feature/your-feature-name
+```
+
+**7. Create Pull Request**
+- Go to GitHub repository
+- Click "New Pull Request"
+- Describe your changes
+- Link related issues
+- Wait for review
+
+### Code Style
+
+**Python:**
+```python
+# Good
+def calculate_psnr(original, modified):
+    """
+    Calculate Peak Signal-to-Noise Ratio.
+    
+    Args:
+        original: Original image array
+        modified: Modified image array
+    
+    Returns:
+        float: PSNR value in dB
+    """
+    mse = np.mean((original - modified) ** 2)
+    if mse == 0:
+        return float('inf')
+    return 20 * np.log10(255.0 / np.sqrt(mse))
+```
+
+**JavaScript:**
+```javascript
+// Good
+async function performDetection(imageFile) {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    
+    try {
+        const response = await fetch('/perform_detect', {
+            method: 'POST',
+            body: formData
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Detection failed:', error);
+        throw error;
+    }
+}
+```
+
+### Development Setup
+
+**Install development dependencies:**
+```bash
+pip install -r requirements-dev.txt
+```
+
+**requirements-dev.txt:**
+```txt
+# All production dependencies from requirements.txt
+# Plus development tools:
+pytest==7.4.0
+black==23.7.0
+flake8==6.1.0
+pylint==2.17.5
+```
+
+**Run code formatting:**
+```bash
+black app.py
+```
+
+**Run linting:**
+```bash
+flake8 app.py
+pylint app.py
+```
+
+---
+
+## 🔒 Security
+
+### Security Features
+
+✅ **AES-256 Encryption**: All messages encrypted before embedding  
+✅ **Secure Key Management**: Persistent key with file permissions  
+✅ **Input Validation**: File type and size validation  
+✅ **Secure File Handling**: Using Werkzeug secure_filename()  
+✅ **Automatic Cleanup**: Temporary files removed after use  
+✅ **No Client-Side Storage**: No sensitive data in browser  
+
+### Security Best Practices
+
+**1. Key Management**
+```bash
+# Protect encryption key
+chmod 600 .encryption_key
+
+# Never commit to Git
+echo ".encryption_key" >> .gitignore
+```
+
+**2. File Upload Security**
+```python
+# Validate file types
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+# Validate file size
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 10MB
+```
+
+**3. Secure Deployment**
+```bash
+# Use HTTPS in production
+# Set secure headers
+# Enable CORS restrictions
+# Use environment variables for secrets
+```
+
+### Libraries & Frameworks
+
+- **Flask**: Lightweight Python web framework
+- **OpenCV**: Computer vision and image processing
+- **PyCryptodome**: Cryptographic library
+- **NumPy**: Scientific computing
+- **Scikit-Image**: Image processing algorithms
+- **Matplotlib**: Visualization library
+- **FPDF**: PDF generation
+
+### Inspiration
+
+- Digital forensics community
+- Cybersecurity research papers
+- Open-source steganography tools
+
+### Special Thanks
+
+- Stack Overflow community for debugging help
+- GitHub for hosting and version control
+- Render/Railway for free hosting
+
+---
+
+## 📞 Contact & Support
+
+### Get Help
+
+- 📧 **Email**: chetanm.ravall@gmail.com
+- 💬 **GitHub Issues**: [Open an issue](https://github.com/iChetanRaval/Steganography-Project/issues)
+- 🌐 **Website**: https://your-website.com
+- 💼 **LinkedIn**: [Your LinkedIn Profile](https://www.linkedin.com/in/ichetan-raval/)
+
+### Follow for Updates
+
+- ⭐ Star this repository to show support
+- 👁️ Watch for updates and new features
+- 🍴 Fork to create your own version
+
+---
+
+## 🚀 Roadmap
+
+### Version 2.0 (Planned)
+
+- [ ] Mobile application (iOS/Android)
+- [ ] Browser extension
+- [ ] Advanced steganalysis techniques
+- [ ] Support for more algorithms (F5, J-UNIWARD)
+- [ ] Blockchain-based verification
+- [ ] AI-powered optimal algorithm selection
+- [ ] Multi-language support
+- [ ] Collaborative features
+
+---
+
+## 📊 Project Statistics
+
+![GitHub stars](https://img.shields.io/github/stars/iChetanRaval/Steganography-Project?style=social)
+![GitHub forks](https://img.shields.io/github/forks/iChetanRaval/Steganography-Project?style=social)
+![GitHub issues](https://img.shields.io/github/issues/iChetanRaval/Steganography-Project)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/iChetanRaval/Steganography-Project)
+![GitHub last commit](https://img.shields.io/github/last-commit/iChetanRaval/Steganography-Project)
+![GitHub code size](https://img.shields.io/github/languages/code-size/iChetanRaval/Steganography-Project)
+
+---
+
+## 🎓 Citation
+
+If you use this project in your research or academic work, please cite:
+
+```bibtex
+@software{steganography_platform_2024,
+  authors = {Chetan Raval, Sohan Kurale, Abhishek Swami, Abhishek Patil},
+  title = {Steganography Detection \& Forensic Analysis Platform},
+  year = {2025},
+  url = {https://github.com/iChetanRaval/Steganography-Project},
+  version = {1.0.0}
+}
+```
+
+---
+
+## ⚠️ Disclaimer
+
+This tool is provided for **educational and research purposes only**. 
+
+- The authors are not responsible for any misuse of this software
+- Users must comply with all applicable laws and regulations
+- Steganography may be illegal in some jurisdictions
+- Do not use for malicious purposes
+- Always obtain proper authorization before testing on systems you don't own
+
+**USE AT YOUR OWN RISK**
+
+---
+
+## 🌟 Show Your Support
+
+If you found this project helpful:
+
+- ⭐ **Star** this repository
+- 🐦 **Share** on social media
+- 💬 **Spread** the word
+- 🤝 **Contribute** to the project
+- ☕ **Buy me a coffee** (optional donation link)
+
+---
+
+<div align="center">
+
+**Built with ❤️ by [Chetan Raval & Team]**
+
+[🌐 Website](http://chetanraval.netlify.app/) • [💼 LinkedIn](https://www.linkedin.com/in/ichetan-raval/) • [🐙 GitHub](https://github.com/iChetanRaval/)
+
+Made with Python 🐍 | Flask | OpenCV | Advanced Cryptography
+
+---
+
+**⭐ Star this repo if you found it helpful! ⭐**
+
+</div>
+
+---
+
+**Last Updated**: November 2025  
+**Version**: 1.0.0  
+**Status**: ✅ Active Development
