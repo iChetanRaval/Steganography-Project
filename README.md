@@ -1023,7 +1023,7 @@ All endpoints return error responses in this format:
 ## 📁 Project Structure
 
 ```
-steganography-platform/
+Steganography-Project/
 │
 ├── 📄 app.py                          # Flask application entry point
 ├── 📄 requirements.txt                # Python dependencies
@@ -1411,8 +1411,8 @@ We welcome contributions! Here's how you can help:
 
 **1. Fork the Repository**
 ```bash
-git clone https://github.com/yourusername/steganography-platform.git
-cd steganography-platform
+git clone https://github.com/iChetanRaval/Steganography-Project
+cd Steganography-Project
 ```
 
 **2. Create a Branch**
