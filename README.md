@@ -30,13 +30,6 @@
 - [Project Structure](#-project-structure)
 - [Technology Stack](#-technology-stack)
 - [System Architecture](#-system-architecture)
-- [Configuration](#-configuration)
-- [Testing](#-testing)
-- [Contributing](#-contributing)
-- [Security](#-security)
-- [FAQ](#-faq)
-- [License](#-license)
-- [Acknowledgments](#-acknowledgments)
 
 ---
 
