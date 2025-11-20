@@ -12,8 +12,6 @@
 
 [Features](#-features) • [Demo](#-demo) • [Installation](#-installation) • [Usage](#-usage) • [API](#-api-documentation) • [Contributing](#-contributing)
 
-![Steganography Platform](https://via.placeholder.com/800x400/667eea/ffffff?text=Steganography+Detection+Platform)
-
 </div>
 
 ---
