@@ -102,16 +102,20 @@ A professional-grade steganography platform that enables secure data hiding in i
 <summary>Click to expand screenshots</summary>
 
 ### Home Page
-![Home](https://via.placeholder.com/800x400/667eea/ffffff?text=Home+Page)
+![Home](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/HomePage.png)
 
 ### Embedding Interface
-![Embed](https://via.placeholder.com/800x400/48bb78/ffffff?text=Embedding+Interface)
+![Embed](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/EmbeddingPage.png)
 
 ### Detection Results
-![Detect](https://via.placeholder.com/800x400/ed8936/ffffff?text=Detection+Results)
+![Detect](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/Detect_Page1.png)
+![Detect](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/Detect_Page2.png)
 
 ### Forensic Report Sample
-![Report](https://via.placeholder.com/800x400/f56565/ffffff?text=Forensic+Report)
+![Report](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/ReportPage.png)
+
+### Extraction Interface
+![Report](https://github.com/iChetanRaval/Steganography-Project/blob/main/screenshots/ExtractPage.png)
 
 </details>
 
