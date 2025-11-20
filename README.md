@@ -130,8 +130,8 @@ A professional-grade steganography platform that enables secure data hiding in i
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/steganography-platform.git
-cd steganography-platform
+git clone https://github.com/iChetanRaval/Steganography-Project
+cd Steganography-Project
 
 # Create virtual environment
 python -m venv venv
@@ -150,13 +150,6 @@ mkdir uploads static/generated static/reports temp_forensics
 
 # Run application
 python app.py
-```
-
-### Method 2: Docker (Coming Soon)
-
-```bash
-docker pull yourusername/steganography-platform
-docker run -p 5000:5000 steganography-platform
 ```
 
 ### Verify Installation
